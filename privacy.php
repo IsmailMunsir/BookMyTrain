@@ -1,9 +1,9 @@
 <?php include('includes/header.php'); ?>
 <?php include('includes/navbar.php'); ?>
-
-<div class="container">
-  <h1>Privacy Policy</h1>
-  <p>Your privacy is important to us. We collect only necessary personal information and do not share it with third parties without consent.</p>
-</div>
-
+<section class="info-section">
+  <div class="container">
+    <h1>Privacy Policy</h1>
+    <p>We value your privacy. All personal data collected through this site is protected and not shared with third parties without your consent.</p>
+  </div>
+</section>
 <?php include('includes/footer.php'); ?>
