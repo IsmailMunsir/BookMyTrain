@@ -1,11 +1,27 @@
+  // Animated Counter
+  document.querySelectorAll('.counter').forEach(counter => {
+    const update = () => {
+      const target = +counter.dataset.target;
+      const current = +counter.innerText;
+      const increment = target / 200;
+      if (current < target) {
+        counter.innerText = Math.ceil(current + increment);
+        setTimeout(update, 10);
+      } else {
+        counter.innerText = target;
+      }
+    };
+    update();
+  });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.querySelector("form");
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      alert("Message sent successfully!");
-    });
-  }
-
-  // Future: Smooth scroll or tab highlight logic can go here
-});
+  // Newsletter Email Validation
+  document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const re = /\S+@\S+\.\S+/;
+    if (re.test(email)) {
+      alert('Thank you for subscribing!');
+    } else {
+      alert('Please enter a valid email address.');
+    }
+  });
