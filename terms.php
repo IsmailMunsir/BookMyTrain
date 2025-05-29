@@ -1,7 +1,6 @@
 <?php $customStylesheet = "assets/css/terms.css"; ?>
 <?php $customScript = "assets/js/terms.js"; ?>
 <?php include('includes/header.php'); ?>
-<?php include('includes/navbar.php'); ?>
 
 <div class="terms-wrapper">
   <aside class="terms-sidebar">
