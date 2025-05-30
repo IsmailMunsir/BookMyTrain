@@ -1,0 +1,27 @@
+.cancel-ticket {
+  background: #fff;
+  padding: 50px 20px;
+}
+.cancel-ticket h1 {
+  color: #7e3af2;
+}
+.cancel-ticket form {
+  max-width: 500px;
+  margin: auto;
+}
+.cancel-ticket input,
+.cancel-ticket button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+}
+.cancel-ticket button {
+  background-color: #ff4b5c;
+  color: #fff;
+  border: none;
+  transition: background 0.3s;
+}
+.cancel-ticket button:hover {
+  background-color: #d13a47;
+}

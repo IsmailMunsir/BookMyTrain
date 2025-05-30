@@ -1,0 +1,28 @@
+.my-tickets {
+  background: #f9f9f9;
+  padding: 50px 20px;
+}
+.my-tickets h1 {
+  color: #7e3af2;
+}
+.ticket-list {
+  margin-top: 30px;
+}
+.ticket {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+.cancel-link {
+  color: #fff;
+  background-color: #ff4b5c;
+  padding: 6px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.cancel-link:hover {
+  background-color: #d13a47;
+}

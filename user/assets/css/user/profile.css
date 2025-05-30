@@ -1,0 +1,27 @@
+.user-profile {
+  background: #f2f2f2;
+  padding: 50px 20px;
+}
+.user-profile h1 {
+  color: #7e3af2;
+}
+.user-profile form {
+  max-width: 600px;
+  margin: auto;
+}
+.user-profile input,
+.user-profile button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+}
+.user-profile button {
+  background-color: #7e3af2;
+  color: #fff;
+  border: none;
+  transition: background 0.3s;
+}
+.user-profile button:hover {
+  background-color: #5e29c9;
+}

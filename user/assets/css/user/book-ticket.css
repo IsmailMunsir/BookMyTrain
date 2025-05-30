@@ -1,0 +1,30 @@
+.book-ticket {
+  background: #fff;
+  padding: 50px 20px;
+}
+.book-ticket h1 {
+  color: #7e3af2;
+}
+.book-ticket form {
+  max-width: 600px;
+  margin: auto;
+}
+.book-ticket input,
+.book-ticket select,
+.book-ticket button {
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.book-ticket button {
+  background-color: #7e3af2;
+  color: #fff;
+  border: none;
+  transition: background 0.3s;
+}
+.book-ticket button:hover {
+  background-color: #5e29c9;
+}
