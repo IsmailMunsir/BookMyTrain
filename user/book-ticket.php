@@ -1,140 +1,170 @@
-<?php include('../includes/header.php'); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Ticket</title>
+  <link rel="stylesheet" href="../assets/css/user/book-ticket.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <style>
+    .ticket-booking-section { background: #f9f9ff; padding: 60px 20px; font-family: 'Segoe UI', sans-serif; }
+    .ticket-booking-container { max-width: 700px; margin: auto; background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); }
+    .ticket-booking-input-group { margin-bottom: 20px; }
+    .ticket-booking-input-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+    .ticket-booking-container input,
+    .ticket-booking-container select { width: 100%; padding: 14px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
+    .ticket-booking-container input:focus,
+    .ticket-booking-container select:focus { border-color: #7e3af2; outline: none; box-shadow: 0 0 0 3px rgba(126,58,242,0.2); }
+    .ticket-booking-btn-primary { width: 100%; padding: 14px; font-size: 18px; background-color: #7e3af2; color: white; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; }
+    .ticket-booking-btn-primary:hover { background-color: #5e29c9; }
+    .ticket-booking-btn-group { display: flex; gap: 10px; }
+    .pulse { animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(126,58,242,0.4); } 70% { box-shadow: 0 0 0 15px rgba(126,58,242,0); } 100% { box-shadow: 0 0 0 0 rgba(126,58,242,0); } }
+    .seat-counter { font-weight: bold; color: #333; }
+    .gender-row { display: flex; gap: 20px; align-items: center; margin-bottom: 10px; }
+    .gender-row label { margin: 0; font-weight: normal; }
+  </style>
+</head>
+<body>
+  <?php include('../includes/header.php'); ?>
+  <?php include('../includes/navbar.php'); ?>
 
-<!-- ✅ External CSS -->
-<link rel="stylesheet" href="../assets/css/user/book-ticket.css">
+  <section class="ticket-booking-section" data-aos="fade-up">
+    <div class="ticket-booking-container">
+      <h1><i class="fas fa-ticket-alt"></i> Book Your Train Ticket</h1>
+      <p class="tagline">Start by entering your journey details</p>
 
-<!-- ✅ FontAwesome & AOS Animation -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+      <form action="process-booking.php" method="POST" class="booking-form">
+        <div id="step-1">
+          <div class="ticket-booking-input-group">
+            <label><i class="fas fa-train"></i> From Station</label>
+            <input type="text" name="from" placeholder="e.g. Colombo Fort" required>
+          </div>
+          <div class="ticket-booking-input-group">
+            <label><i class="fas fa-map-marker-alt"></i> To Station</label>
+            <input type="text" name="to" placeholder="e.g. Kandy" required>
+          </div>
+          <div class="ticket-booking-input-group">
+            <label><i class="fas fa-calendar-alt"></i> Travel Date</label>
+            <input type="date" name="travel_date" required>
+          </div>
+          <button type="button" class="ticket-booking-btn-primary pulse" onclick="showStep2()">⬆️ Continue</button>
+        </div>
 
-<!-- ✅ Booking Section -->
-<section class="book-ticket" data-aos="fade-up">
-  <div class="container">
-    <h1><i class="fas fa-ticket-alt"></i> Book Your Train Ticket</h1>
-    <p class="tagline">Plan your journey with comfort, speed, and ease.</p>
+        <div id="step-2" style="display:none;">
+          <div class="ticket-booking-input-group">
+            <label><i class="fas fa-chair"></i> Class</label>
+            <select name="class" id="classSelect" required onchange="updateCompartments()">
+              <option value="" disabled selected>Select Class</option>
+              <option value="first">First Class</option>
+              <option value="second">Second Class</option>
+              <option value="third">Third Class</option>
+            </select>
+          </div>
 
-    <form action="process-booking.php" method="POST" class="booking-form">
-      <div class="input-group">
-        <label for="from"><i class="fas fa-train"></i> From Station</label>
-        <input type="text" id="from" name="from" placeholder="e.g. Colombo Fort" required>
-      </div>
-      <div class="input-group">
-        <label for="to"><i class="fas fa-map-marker-alt"></i> To Station</label>
-        <input type="text" id="to" name="to" placeholder="e.g. Kandy" required>
-      </div>
-      <div class="input-group">
-        <label for="travel_date"><i class="fas fa-calendar-alt"></i> Travel Date</label>
-        <input type="date" id="travel_date" name="travel_date" required>
-      </div>
-      <div class="input-group">
-        <label for="class"><i class="fas fa-chair"></i> Class</label>
-        <select name="class" id="class" required>
-          <option value="" disabled selected>Select Class</option>
-          <option value="first">First Class</option>
-          <option value="second">Second Class</option>
-          <option value="third">Third Class</option>
-        </select>
-      </div>
-      <button type="submit" class="btn-primary pulse">🚆 Book Ticket</button>
-    </form>
-  </div>
-</section>
+          <div class="ticket-booking-input-group">
+            <label><i class="fas fa-th-large"></i> Compartment</label>
+            <select name="compartment" id="compartmentSelect" required>
+              <option value="" disabled selected>Select Compartment</option>
+            </select>
+          </div>
 
-<!-- ✅ AOS Animation Script -->
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
+          <div class="ticket-booking-input-group">
+            <label><i class="fas fa-th"></i> Seat Count (Max: 15)</label>
+            <input type="number" id="manualSeatCount" name="selected_seats" min="1" max="15" placeholder="Enter number of seats" required>
+            <p class="seat-counter"><span id="selectedCount">0</span> seat(s) selected</p>
+          </div>
 
-<!-- ✅ Inline Style (You can move to ../assets/css/user/book-ticket.css) -->
-<style>
-.book-ticket {
-  background: #f9f9ff;
-  padding: 60px 20px;
-  font-family: 'Segoe UI', sans-serif;
-  overflow-x: hidden;
-}
-.book-ticket .container {
-  max-width: 700px;
-  margin: auto;
-  background: #fff;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  animation: fadeIn 1s ease-in-out;
-}
-.book-ticket h1 {
-  text-align: center;
-  color: #7e3af2;
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-.book-ticket .tagline {
-  text-align: center;
-  color: #555;
-  font-size: 16px;
-  margin-bottom: 30px;
-}
-.booking-form .input-group {
-  margin-bottom: 20px;
-}
-.booking-form label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #333;
-}
-.booking-form input,
-.booking-form select {
-  width: 100%;
-  padding: 14px 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: 0.3s;
-}
-.booking-form input:focus,
-.booking-form select:focus {
-  border-color: #7e3af2;
-  box-shadow: 0 0 0 3px rgba(126, 58, 242, 0.2);
-  outline: none;
-}
-.btn-primary {
-  width: 100%;
-  padding: 14px;
-  font-size: 18px;
-  border: none;
-  border-radius: 8px;
-  background-color: #7e3af2;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-}
-.btn-primary:hover {
-  background-color: #5e29c9;
-}
-.pulse {
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(126, 58, 242, 0.4); }
-  70% { box-shadow: 0 0 0 15px rgba(126, 58, 242, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(126, 58, 242, 0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@media screen and (max-width: 600px) {
-  .book-ticket .container {
-    padding: 25px;
+          <div class="ticket-booking-input-group">
+            <label><i class="fas fa-users"></i> Passenger Genders</label>
+            <div id="genderInputsContainer"></div>
+          </div>
+
+          <div class="ticket-booking-btn-group">
+            <button type="button" class="ticket-booking-btn-primary pulse" onclick="goBackStep1()">⬅️ Back</button>
+            <button type="submit" class="ticket-booking-btn-primary pulse">✅ Book Ticket</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init();</script>
+
+  <script>
+  function showStep2() {
+    const from = document.querySelector('input[name="from"]');
+    const to = document.querySelector('input[name="to"]');
+    const travelDate = document.querySelector('input[name="travel_date"]');
+
+    if (!from.value.trim() || !to.value.trim() || !travelDate.value.trim()) {
+      alert("Please fill in all fields before continuing.");
+      return;
+    }
+
+    document.getElementById('step-1').style.display = 'none';
+    document.getElementById('step-2').style.display = 'block';
   }
-  .btn-primary {
-    font-size: 16px;
+
+  function goBackStep1() {
+    document.getElementById('step-2').style.display = 'none';
+    document.getElementById('step-1').style.display = 'block';
   }
-}
-</style>
 
-<?php include('../includes/footer.php'); ?>
+  function updateCompartments() {
+    const classSelect = document.getElementById("classSelect");
+    const compartmentSelect = document.getElementById("compartmentSelect");
 
+    const compartments = {
+      first: ["A", "B", "C", "D"],
+      second: ["D", "E", "F", "G"],
+      third: ["H", "I", "J", "K"]
+    };
+
+    const selectedClass = classSelect.value;
+    const options = compartments[selectedClass] || [];
+
+    compartmentSelect.innerHTML = '<option value="" disabled selected>Select Compartment</option>';
+    options.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c;
+      opt.textContent = `Compartment ${c}`;
+      compartmentSelect.appendChild(opt);
+    });
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const seatCountInput = document.getElementById("manualSeatCount");
+    const seatCountDisplay = document.getElementById("selectedCount");
+    const genderContainer = document.getElementById("genderInputsContainer");
+
+    seatCountInput.addEventListener("input", () => {
+      let count = parseInt(seatCountInput.value);
+      if (isNaN(count) || count < 0) count = 0;
+      if (count > 15) {
+        alert("You can select a maximum of 15 seats.");
+        seatCountInput.value = 15;
+        count = 15;
+      }
+      seatCountDisplay.innerText = count;
+
+      genderContainer.innerHTML = "";
+      for (let i = 1; i <= count; i++) {
+        const div = document.createElement("div");
+        div.className = "gender-row";
+        div.innerHTML = `
+          <label>Passenger ${i}:</label>
+          <label><input type="radio" name="gender_seat_${i}" value="male" required> Male</label>
+          <label><input type="radio" name="gender_seat_${i}" value="female" required> Female</label>
+        `;
+        genderContainer.appendChild(div);
+      }
+    });
+  });
+  </script>
+
+  <?php include('../includes/footer.php'); ?>
+</body>
+</html>
