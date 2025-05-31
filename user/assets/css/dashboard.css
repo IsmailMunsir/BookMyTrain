@@ -1,28 +1,76 @@
 .user-dashboard {
-  padding: 50px 20px;
-  background: #f5f5f5;
+  background: #f1f4fd;
+  padding: 70px 20px;
+  font-family: 'Segoe UI', sans-serif;
 }
-.user-dashboard h1 {
+
+.dashboard-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.welcome-box h1 {
+  font-size: 2.7rem;
   color: #7e3af2;
-  font-size: 2.5em;
+  margin-bottom: 10px;
 }
-.dashboard-links {
-  margin-top: 20px;
-  list-style: none;
-  padding: 0;
+
+.welcome-box p {
+  font-size: 1.1rem;
+  color: #444;
 }
-.dashboard-links li {
-  margin: 10px 0;
+
+.dashboard-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 60px;
 }
-.dashboard-links a {
-  color: #fff;
+
+.card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  width: 260px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+.card i {
+  font-size: 40px;
+  color: #7e3af2;
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.btn-dashboard {
   background-color: #7e3af2;
-  padding: 10px 20px;
+  color: #fff;
+  padding: 10px 25px;
+  border-radius: 25px;
   text-decoration: none;
-  border-radius: 8px;
+  font-weight: bold;
   display: inline-block;
-  transition: background 0.3s;
+  transition: background-color 0.3s ease;
 }
-.dashboard-links a:hover {
-  background-color: #5e29c9;
+
+.btn-dashboard:hover {
+  background-color: #5a28c8;
 }

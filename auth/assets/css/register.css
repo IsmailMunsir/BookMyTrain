@@ -1,0 +1,44 @@
+.register-section {
+  background: linear-gradient(to left, #7e3af2, #9333ea);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-wrapper {
+  background: #fff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 420px;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.register-form input:focus {
+  border-color: #7e3af2;
+}
+
+.btn-register {
+  width: 100%;
+  padding: 12px;
+  background: #7e3af2;
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 15px;
+}

@@ -28,7 +28,6 @@
 </head>
 <body>
   <?php include('../includes/header.php'); ?>
-  <?php include('../includes/navbar.php'); ?>
 
   <section class="ticket-booking-section" data-aos="fade-up">
     <div class="ticket-booking-container">

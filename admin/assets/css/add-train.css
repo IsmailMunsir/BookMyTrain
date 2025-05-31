@@ -1,0 +1,15 @@
+.add-train-section {
+  padding: 60px 20px;
+  background-color: #f9f9f9;
+}
+.add-train-section h1 {
+  color: #7e3af2;
+  font-size: 2.5rem;
+  text-align: center;
+}
+.add-train-section p {
+  max-width: 800px;
+  margin: 10px auto;
+  text-align: center;
+  color: #555;
+}

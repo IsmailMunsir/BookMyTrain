@@ -1,30 +1,76 @@
 .feedback-form {
-  background: #fff;
-  padding: 50px 20px;
+  background: #f1f4fd;
+  padding: 70px 20px;
+  font-family: 'Segoe UI', sans-serif;
 }
-.feedback-form h1 {
+
+.feedback-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.feedback-text {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.feedback-text h1 {
+  font-size: 2.5rem;
   color: #7e3af2;
+  margin-bottom: 10px;
 }
-.feedback-form form {
-  max-width: 600px;
-  margin: auto;
+
+.feedback-text p {
+  font-size: 1.1rem;
+  color: #555;
 }
-.feedback-form textarea {
-  width: 100%;
-  height: 150px;
-  padding: 12px;
-  margin-bottom: 15px;
-  border-radius: 6px;
+
+.form-area {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.input-group input {
+  flex: 1;
+  padding: 12px 15px;
+  border-radius: 8px;
   border: 1px solid #ccc;
+  font-size: 1rem;
 }
-.feedback-form button {
+
+textarea {
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.btn-submit {
   background-color: #7e3af2;
-  color: #fff;
-  padding: 12px;
+  color: white;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: bold;
   border: none;
-  border-radius: 6px;
-  transition: background 0.3s;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
 }
-.feedback-form button:hover {
-  background-color: #5e29c9;
+
+.btn-submit:hover {
+  background-color: #5a28c8;
 }
