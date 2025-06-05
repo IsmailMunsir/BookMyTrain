@@ -14,12 +14,13 @@
   </ul>
 </aside>
 
+
 <style>
-    /* Sidebar Styles */
+  /* Admin Sidebar Styling */
 .sidebar {
   width: 260px;
   background: #7e3af2;
-  color: white;
+  color: #fff;
   padding: 30px 20px;
   position: fixed;
   top: 0;
@@ -35,14 +36,10 @@
   margin-bottom: 30px;
 }
 
-.sidebar-header i {
-  margin-right: 10px;
-  color: white;
-}
-
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .sidebar ul li {
@@ -54,50 +51,35 @@
   align-items: center;
   gap: 12px;
   color: white;
-  padding: 12px 15px;
+  padding: 10px 15px;
   text-decoration: none;
   border-radius: 8px;
-  transition: 0.3s ease;
-  font-size: 1rem;
+  transition: background 0.3s ease;
 }
 
 .sidebar ul li a:hover,
 .sidebar ul li a.active {
   background: rgba(255, 255, 255, 0.15);
-  color: #ffd700;
 }
 
-@media (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-
-  .sidebar ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
-
-  .sidebar ul li {
-    margin: 5px 0;
-  }
+.sidebar ul li a i {
+  font-size: 1rem;
 }
 
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-  // Highlight active link based on current page
+  // JS for Admin Sidebar (optional interactivity)
+document.addEventListener("DOMContentLoaded", () => {
   const links = document.querySelectorAll(".sidebar ul li a");
-  const currentPath = window.location.pathname.split("/").pop();
 
   links.forEach(link => {
-    if (link.getAttribute("href") === currentPath) {
+    link.addEventListener("click", () => {
+      // Remove 'active' class from all links
+      links.forEach(l => l.classList.remove("active"));
+      // Add 'active' class to clicked link
       link.classList.add("active");
-    }
+    });
   });
 });
 

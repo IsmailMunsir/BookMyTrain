@@ -6,7 +6,7 @@
 <script src="../assets/js/admin/dashboard.js" defer></script>
 
 <div class="admin-layout">
-  <!-- Sidebar -->
+  <!--   -->
   <aside class="sidebar">
   <div class="sidebar-header">
     <h2><i class="fas fa-train"></i> BookMyTrain</h2>
