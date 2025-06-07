@@ -1,111 +1,118 @@
 <?php
 session_start();
-include('../includes/admin-sidebar.php'); // Sidebar Include
+include('../includes/admin-sidebar.php');
 ?>
 
-<!-- External Styles & Scripts -->
-<link rel="stylesheet" href="../assets/css/admin/dashboard.css">
+<!-- External Resources -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script src="../assets/js/admin/dashboard.js" defer></script>
 
 <div class="admin-layout">
-  <!-- Sidebar already included -->
-
-  <!-- Main Content -->
   <main class="dashboard-section" data-aos="fade-up">
     <div class="dashboard-container">
-      <h1><i class="fas fa-tachometer-alt"></i> Admin <span>Dashboard</span></h1>
-      <p class="dashboard-subtitle">Your control panel for everything train-related.</p>
 
-      <div class="dashboard-cards">
-        <div class="card glass" data-aos="zoom-in">
-          <h2>Total Trains</h2>
+      <!-- Title -->
+      <h1><i class="fas fa-ticket-alt"></i> Manage <span>Bookings</span></h1>
+      <p class="dashboard-subtitle">Track and manage all user bookings across the train network.</p>
+
+      <!-- Stat Cards -->
+      <div class="dashboard-cards" data-aos="zoom-in">
+        <div class="card glass">
+          <h2>Total Bookings</h2>
+          <p>145</p>
+        </div>
+        <div class="card glass">
+          <h2>Confirmed</h2>
           <p>120</p>
         </div>
-        <div class="card glass" data-aos="zoom-in" data-aos-delay="100">
-          <h2>Total Users</h2>
-          <p>540</p>
-        </div>
-        <div class="card glass" data-aos="zoom-in" data-aos-delay="200">
-          <h2>Total Bookings</h2>
-          <p>312</p>
-        </div>
-        <!-- ✅ Advanced Manage Bookings Card -->
-        <div class="card glass booking-card" data-aos="zoom-in" data-aos-delay="300">
-          <div class="booking-icon"><i class="fas fa-ticket-alt"></i></div>
-          <h2>Manage Bookings</h2>
-          <p>312 Active</p>
-          <span class="badge">Live</span>
-          <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="card glass">
+          <h2>Cancelled</h2>
+          <p>25</p>
         </div>
       </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <input type="text" class="search-input" placeholder="Search by user or train..." />
+        <select class="status-filter">
+          <option value="all">All Statuses</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <button class="btn-refresh"><i class="fas fa-sync-alt"></i> Refresh</button>
+      </div>
+
+      <!-- Bookings Table -->
+      <div class="booking-table-wrapper" data-aos="fade-up" data-aos-delay="100">
+        <table class="booking-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Train</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>001</td>
+              <td>Jane Perera</td>
+              <td>Southern Express</td>
+              <td>Galle</td>
+              <td>Colombo Fort</td>
+              <td>2025-06-20</td>
+              <td><span class="badge success">Confirmed</span></td>
+              <td>
+                <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                <button class="action-btn cancel"><i class="fas fa-times"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-controls" data-aos="fade-up">
+        <button class="page-btn">Previous</button>
+        <span class="page-info">Page 1 of 3</span>
+        <button class="page-btn">Next</button>
+      </div>
+
+      <!-- Recent Bookings -->
+      <div class="recent-bookings" data-aos="fade-up" data-aos-delay="200">
+        <h3>Recent Bookings</h3>
+        <ul>
+          <li><i class="fas fa-check-circle success-icon"></i> Anushka booked Intercity Express (Colombo → Kandy)</li>
+          <li><i class="fas fa-check-circle success-icon"></i> Malithi booked Yal Devi (Vavuniya → Jaffna)</li>
+          <li><i class="fas fa-times-circle cancel-icon"></i> Sahan cancelled Southern Express (Galle → Colombo)</li>
+          <li><i class="fas fa-check-circle success-icon"></i> Kumari booked Rajarata Rejina (Anuradhapura → Colombo)</li>
+        </ul>
+      </div>
+
     </div>
   </main>
 </div>
 
-<!-- Inline Style -->
+<footer class="admin-footer">
+  <p>&copy; <?php echo date("Y"); ?> BookMyTrain Admin Panel. All rights reserved.</p>
+</footer>
+
+<!-- Styles -->
 <style>
-  * {
-    box-sizing: border-box;
-  }
-
+  * { box-sizing: border-box; }
   body, html {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
+    margin: 0; padding: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(to right, #ece9f1, #f9f8ff);
+    background: linear-gradient(to bottom right, #f7f7fb, #e8e8f4);
   }
 
-  .admin-layout {
-    display: flex;
-    padding-bottom: 70px;
-  }
-
-  .sidebar {
-    width: 260px;
-    background: #7e3af2;
-    color: #fff;
-    padding: 30px 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    overflow-y: auto;
-  }
-
-  .sidebar-header {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-  }
-
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .sidebar ul li {
-    margin: 18px 0;
-  }
-
-  .sidebar ul li a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: white;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: 0.3s;
-  }
-
-  .sidebar ul li a:hover,
-  .sidebar ul li a.active {
-    background: rgba(255, 255, 255, 0.15);
-  }
+  .admin-layout { display: flex; padding-bottom: 80px; }
 
   .dashboard-section {
     margin-left: 260px;
@@ -113,108 +120,179 @@ include('../includes/admin-sidebar.php'); // Sidebar Include
     width: calc(100% - 260px);
   }
 
-  .dashboard-container h1 {
-    font-size: 2.5rem;
+  h1 {
+    font-size: 2.6rem;
     color: #333;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+  }
+
+  h1 i {
+    color: #7e3af2;
+    background: #e0d4ff;
+    padding: 10px;
+    border-radius: 50%;
+  }
+
+  .dashboard-subtitle { font-size: 1.1rem; color: #555; margin-bottom: 30px; }
+
+  .dashboard-cards {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .card {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    flex: 1;
+    text-align: center;
+  }
+
+  .card h2 {
+    font-size: 1.1rem;
+    color: #666;
     margin-bottom: 10px;
+  }
+
+  .card p {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .search-input, .status-filter {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+
+  .btn-refresh {
+    background: #7e3af2;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .btn-refresh:hover { background: #5f2ac9; }
+
+  .booking-table-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+  }
+
+  .booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 960px;
+  }
+
+  .booking-table th, .booking-table td {
+    text-align: left;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+  }
+
+  .booking-table th {
+    background: #7e3af2;
+    color: white;
+    font-weight: bold;
+  }
+
+  .booking-table tbody tr:hover { background: #f4f0ff; }
+
+  .badge {
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .badge.success { background: #28a745; color: white; }
+  .badge.cancelled { background: #dc3545; color: white; }
+
+  .action-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-right: 8px;
+    transition: 0.2s;
+  }
+
+  .action-btn.view:hover { color: #17a2b8; }
+  .action-btn.edit:hover { color: #ffc107; }
+  .action-btn.cancel:hover { color: #dc3545; }
+
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 25px;
+  }
+
+  .page-btn {
+    padding: 10px 20px;
+    border: 1px solid #7e3af2;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .page-info {
+    font-weight: bold;
+    color: #444;
+  }
+
+  .recent-bookings {
+    margin-top: 40px;
+    background: white;
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+  }
+
+  .recent-bookings h3 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+
+  .recent-bookings ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .recent-bookings li {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
     display: flex;
     align-items: center;
     gap: 10px;
   }
 
-  .dashboard-container h1 i {
-    color: #7e3af2;
-  }
-
-  .dashboard-subtitle {
-    color: #666;
-    font-size: 1.1rem;
-    margin-bottom: 40px;
-  }
-
-  .dashboard-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 30px;
-  }
-
-  .card.glass {
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 15px;
-    padding: 25px 20px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.3s ease;
-  }
-
-  .card.glass:hover {
-    transform: translateY(-6px);
-  }
-
-  .card.glass h2 {
-    font-size: 1.4rem;
-    color: #444;
-    margin-bottom: 10px;
-  }
-
-  .card.glass p {
-    font-size: 2rem;
-    color: #7e3af2;
-    font-weight: bold;
-  }
-
-  /* ✅ Manage Bookings Card Styles */
-  .booking-card {
-    position: relative;
-    background: linear-gradient(135deg, #ffffff80, #f4e9ff90);
-    overflow: hidden;
-  }
-
-  .booking-icon {
-    font-size: 2rem;
-    color: #7e3af2;
-    margin-bottom: 12px;
-  }
-
-  .booking-card .badge {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    background: #7e3af2;
-    color: #fff;
-    padding: 5px 10px;
-    font-size: 0.75rem;
-    border-radius: 50px;
-    animation: pulse 1.5s infinite ease-in-out;
-  }
-
-  @keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.6; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-
-  .progress-bar {
-    width: 100%;
-    height: 8px;
-    background: #ddd;
-    border-radius: 20px;
-    margin-top: 15px;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    width: 75%;
-    height: 100%;
-    background: #7e3af2;
-    animation: fillUp 2s ease-in-out forwards;
-  }
-
-  @keyframes fillUp {
-    from { width: 0%; }
-    to { width: 75%; }
-  }
+  .success-icon { color: #28a745; }
+  .cancel-icon { color: #dc3545; }
 
   .admin-footer {
     position: fixed;
@@ -233,21 +311,35 @@ include('../includes/admin-sidebar.php'); // Sidebar Include
 <!-- JavaScript -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    console.log("Admin Dashboard Loaded");
+    AOS.init();
 
-    const cards = document.querySelectorAll(".card");
-    cards.forEach(card => {
-      card.addEventListener("click", () => {
-        const title = card.querySelector("h2").textContent;
-        alert(`You clicked on "${title}"`);
+    document.querySelectorAll(".action-btn.cancel").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const name = btn.closest("tr").children[1].textContent;
+        if (confirm(`Are you sure to cancel booking for ${name}?`)) {
+          alert("Booking cancelled (demo).");
+        }
       });
     });
+
+    document.querySelectorAll(".action-btn.edit").forEach(btn => {
+      btn.addEventListener("click", () => {
+        alert("Edit booking (demo feature).");
+      });
+    });
+
+    document.querySelectorAll(".action-btn.view").forEach(btn => {
+      btn.addEventListener("click", () => {
+        alert("View booking details (demo).");
+      });
+    });
+
+    document.querySelector(".btn-refresh")?.addEventListener("click", () => {
+      location.reload();
+    });
+
+    document.querySelector(".status-filter")?.addEventListener("change", (e) => {
+      alert(`Filtering by: ${e.target.value} (demo only)`);
+    });
   });
-
-  AOS.init();
 </script>
-
-<!-- Footer -->
-<footer class="admin-footer">
-  <p>&copy; <?php echo date("Y"); ?> BookMyTrain Admin Panel. All rights reserved.</p>
-</footer>

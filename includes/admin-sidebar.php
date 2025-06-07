@@ -8,7 +8,6 @@
     <li><a href="manage-trains.php"><i class="fas fa-train"></i> Manage Trains</a></li>
     <li><a href="manage-users.php"><i class="fas fa-users"></i> Manage Users</a></li>
     <li><a href="manage-bookings.php"><i class="fas fa-ticket-alt"></i> Manage Bookings</a></li>
-    <li><a href="create-admin.php"><i class="fas fa-user-plus"></i> Create Admin</a></li>
     <li><a href="profile.php"><i class="fas fa-user-cog"></i> Profile</a></li>
     <li><a href="../auth/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
   </ul>
