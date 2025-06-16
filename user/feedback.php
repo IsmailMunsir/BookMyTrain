@@ -31,6 +31,9 @@
   AOS.init();
 </script>
 
+<?php include('../includes/footer.php'); ?>
+
+
 <style>
   .feedback-form {
   background: #f1f4fd;
@@ -123,5 +126,5 @@ textarea {
   });
 });
 
+
 </script>
-<?php include('../includes/footer.php'); ?>
