@@ -1,31 +1,32 @@
 <?php
 include('../includes/header.php');
 include('../config/db.php');
+session_start();
 
-// Simulate logged-in user (replace with $_SESSION['user_id'] in real use)
+// Use session or hardcoded user for testing
 $user_id = 1;
 
-// Fetch bookings
+// Fetch bookings for this user
 $query = "SELECT * FROM bookings WHERE user_id = $user_id ORDER BY travel_date DESC";
 $result = mysqli_query($conn, $query);
 ?>
 
-<!-- ✅ External Styles -->
+<!-- External CSS -->
 <link rel="stylesheet" href="../assets/css/user/my-tickets.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
 
-<!-- ✅ Booked Tickets Section -->
+<!-- My Tickets Section -->
 <section class="my-tickets" data-aos="fade-up">
   <div class="container">
-    <h1><i class="fas fa-ticket-alt"></i> My Booked Tickets</h1>
-    <p class="subtitle">Below is the list of your booked tickets. You can cancel them if needed.</p>
+    <h1><i class="fas fa-ticket-alt"></i> View & Manage Tickets</h1>
+    <p class="subtitle">View and manage your previously booked tickets.</p>
 
     <div class="ticket-list">
       <?php if (mysqli_num_rows($result) > 0): ?>
         <?php while ($row = mysqli_fetch_assoc($result)): ?>
-          <?php $genderArray = json_decode($row['passenger_genders'], true); ?>
-          <div class="ticket-card" data-aos="zoom-in">
+          <?php $genders = json_decode($row['passenger_genders'], true); ?>
+          <div class="ticket-card" data-aos="zoom-in-up">
             <div class="ticket-info">
               <p><strong>Booking Date:</strong> <?= date('F j, Y, g:i a', strtotime($row['booked_at'])) ?></p>
               <p><strong>Travel Date:</strong> <?= htmlspecialchars($row['travel_date']) ?></p>
@@ -33,11 +34,9 @@ $result = mysqli_query($conn, $query);
               <p><strong>To:</strong> <?= htmlspecialchars($row['to_station']) ?></p>
               <p><strong>Class:</strong> <?= ucfirst($row['class']) ?> Class</p>
               <p><strong>Compartment:</strong> <?= htmlspecialchars($row['compartment']) ?></p>
-              <p><strong>Seat Count:</strong> <?= $row['seat_count'] ?></p>
-              <p><strong>Passenger Genders:</strong>
-                <?= implode(', ', array_map('ucfirst', $genderArray)) ?>
-              </p>
-              <p><strong>Status:</strong> <span style="color: green;">Confirmed</span></p>
+              <p><strong>Seat Count:</strong> <?= (int)$row['seat_count'] ?></p>
+              <p><strong>Passenger Genders:</strong> <?= implode(', ', array_map('ucfirst', $genders)) ?></p>
+              <p><strong>Status:</strong> <span class="status-confirmed">Confirmed</span></p>
             </div>
             <div class="ticket-actions">
               <a href="cancel-ticket.php?id=<?= $row['id'] ?>" class="btn-cancel">Cancel Ticket</a>
@@ -45,18 +44,18 @@ $result = mysqli_query($conn, $query);
           </div>
         <?php endwhile; ?>
       <?php else: ?>
-        <p>No bookings found.</p>
+        <p>No tickets booked yet.</p>
       <?php endif; ?>
     </div>
   </div>
 </section>
 
-<!-- ✅ AOS & JS -->
+<!-- AOS -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
   AOS.init();
-  document.querySelectorAll('.btn-cancel').forEach(btn => {
-    btn.addEventListener('click', function (e) {
+  document.querySelectorAll('.btn-cancel').forEach(button => {
+    button.addEventListener('click', function (e) {
       if (!confirm("Are you sure you want to cancel this ticket?")) {
         e.preventDefault();
       }
@@ -64,7 +63,7 @@ $result = mysqli_query($conn, $query);
   });
 </script>
 
-<!-- ✅ Inline Styles for Simplicity -->
+<!-- Inline Styles -->
 <style>
 .my-tickets {
   background: #f9f9ff;
@@ -124,6 +123,10 @@ $result = mysqli_query($conn, $query);
 }
 .btn-cancel:hover {
   background-color: #c12834;
+}
+.status-confirmed {
+  color: green;
+  font-weight: bold;
 }
 </style>
 
