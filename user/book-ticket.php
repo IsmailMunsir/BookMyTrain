@@ -163,7 +163,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-</script>
+</script> 
 
 <?php include('../includes/footer.php'); ?>
 </body>
