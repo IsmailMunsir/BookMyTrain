@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (!isset($_SESSION['admin_logged_in'])) {
+    header("Location: login.php");
+
+    exit;
+}
 include('../includes/admin-sidebar.php');
 ?>
 
@@ -115,16 +120,53 @@ include('../includes/admin-sidebar.php');
   </main>
 </div>
 
+<!-- Footer -->
 <footer class="admin-footer">
   <p>&copy; <?php echo date("Y"); ?> BookMyTrain Admin Panel. All rights reserved.</p>
 </footer>
 
-<script>AOS.init();</script>
+<script>
+AOS.init();
 
+document.addEventListener("DOMContentLoaded", () => {
+  const ctx = document.getElementById('bookingChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Bookings',
+        data: [50, 80, 100, 120, 90, 140],
+        borderColor: '#7e3af2',
+        backgroundColor: 'rgba(126, 58, 242, 0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: '#7e3af2'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { color: '#555' }
+        },
+        x: {
+          ticks: { color: '#555' }
+        }
+      }
+    }
+  });
+});
+</script>
 
 
 <style>
-/* Reset & Layout */
+  /* Reset & Layout */
 * {
   margin: 0;
   padding: 0;
@@ -143,7 +185,6 @@ body, html {
   padding-bottom: 80px;
 }
 
-/* Main Dashboard */
 .dashboard-section {
   margin-left: 260px;
   width: calc(100% - 260px);
@@ -291,7 +332,7 @@ body, html {
 .badge.warning { background: #f0ad4e; }
 .badge.danger  { background: #dc3545; }
 
-/* Quick Access */
+/* Quick Access & Notifications */
 .quick-access h2,
 .system-notifications h2 {
   font-size: 1.6rem;
@@ -321,7 +362,6 @@ body, html {
   background: #5f2db9;
 }
 
-/* Notifications */
 .system-notifications {
   background: #fff;
   padding: 25px;
@@ -363,12 +403,13 @@ body, html {
   z-index: 100;
 }
 
-
 </style>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const ctx = document.getElementById('bookingChart').getContext('2d');
+  document.addEventListener("DOMContentLoaded", () => {
+  const ctx = document.getElementById('bookingChart')?.getContext('2d');
+  if (!ctx) return;
+
   new Chart(ctx, {
     type: 'line',
     data: {
@@ -401,6 +442,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
 
 </script>

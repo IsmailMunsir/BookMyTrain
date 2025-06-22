@@ -1,13 +1,37 @@
 <?php
 session_start();
 include('../includes/admin-sidebar.php');
+include('../config/db.php');
+
+// Add Route
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['from_city'])) {
+    $from = mysqli_real_escape_string($conn, $_POST['from_city']);
+    $to = mysqli_real_escape_string($conn, $_POST['to_city']);
+    $distance = intval($_POST['distance_km']);
+    mysqli_query($conn, "INSERT INTO routes (from_city, to_city, distance_km) VALUES ('$from', '$to', $distance)");
+    header("Location: manage-routes.php");
+    exit;
+}
+
+// Delete Route
+if (isset($_GET['delete'])) {
+    $id = intval($_GET['delete']);
+    mysqli_query($conn, "DELETE FROM routes WHERE id = $id");
+    header("Location: manage-routes.php");
+    exit;
+}
+
+// Load Data
+$routes = mysqli_query($conn, "SELECT * FROM routes ORDER BY id DESC");
+$totalRoutes = mysqli_num_rows($routes);
+$cityCountRow = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(DISTINCT from_city) + COUNT(DISTINCT to_city) AS city_count FROM routes"));
+$cityCount = $cityCountRow['city_count'];
 ?>
 
-<!-- External Libraries -->
+<!-- External CSS & JS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
 <link rel="stylesheet" href="../assets/css/admin/manage-routes.css">
-
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script src="../assets/js/admin/manage-routes.js" defer></script>
 
@@ -22,12 +46,12 @@ include('../includes/admin-sidebar.php');
         <div class="card glass" data-aos="zoom-in-up">
           <div class="icon-circle"><i class="fas fa-route"></i></div>
           <h2>Total Routes</h2>
-          <p>36</p>
+          <p><?= $totalRoutes ?></p>
         </div>
         <div class="card glass" data-aos="zoom-in-up" data-aos-delay="100">
           <div class="icon-circle"><i class="fas fa-map-marker-alt"></i></div>
           <h2>Cities Covered</h2>
-          <p>18</p>
+          <p><?= $cityCount ?></p>
         </div>
       </div>
 
@@ -45,26 +69,18 @@ include('../includes/admin-sidebar.php');
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>R001</td>
-              <td>Colombo</td>
-              <td>Kandy</td>
-              <td>116 KM</td>
-              <td>
-                <button class="btn-edit"><i class="fas fa-edit"></i></button>
-                <button class="btn-delete"><i class="fas fa-trash"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td>R002</td>
-              <td>Colombo</td>
-              <td>Galle</td>
-              <td>120 KM</td>
-              <td>
-                <button class="btn-edit"><i class="fas fa-edit"></i></button>
-                <button class="btn-delete"><i class="fas fa-trash"></i></button>
-              </td>
-            </tr>
+            <?php while ($row = mysqli_fetch_assoc($routes)) : ?>
+              <tr>
+                <td><?= $row['id'] ?></td>
+                <td><?= htmlspecialchars($row['from_city']) ?></td>
+                <td><?= htmlspecialchars($row['to_city']) ?></td>
+                <td><?= $row['distance_km'] ?> KM</td>
+                <td>
+                  <button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                  <a href="?delete=<?= $row['id'] ?>" onclick="return confirm('Delete this route?');" class="btn-delete" title="Delete"><i class="fas fa-trash"></i></a>
+                </td>
+              </tr>
+            <?php endwhile; ?>
           </tbody>
         </table>
       </div>
@@ -72,10 +88,10 @@ include('../includes/admin-sidebar.php');
       <!-- Add Route Form -->
       <div class="form-section" data-aos="fade-up">
         <h2>Add New Route</h2>
-        <form id="routeForm">
-          <input type="text" placeholder="From City" required />
-          <input type="text" placeholder="To City" required />
-          <input type="number" placeholder="Distance (KM)" required />
+        <form method="POST" id="routeForm">
+          <input type="text" name="from_city" placeholder="From City" required />
+          <input type="text" name="to_city" placeholder="To City" required />
+          <input type="number" name="distance_km" placeholder="Distance (KM)" required />
           <button type="submit" class="btn-submit">Add Route</button>
         </form>
       </div>
@@ -84,9 +100,8 @@ include('../includes/admin-sidebar.php');
 </div>
 
 <footer class="admin-footer">
-  <p>&copy; <?php echo date("Y"); ?> BookMyTrain Admin Panel. All rights reserved.</p>
+  <p>&copy; <?= date("Y") ?> BookMyTrain Admin Panel. All rights reserved.</p>
 </footer>
-
 
 <style>
   body, html {
@@ -262,16 +277,18 @@ include('../includes/admin-sidebar.php');
   AOS.init();
 
   const form = document.getElementById("routeForm");
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    alert("New route added successfully!");
-    form.reset();
-  });
+  if (form) {
+    form.addEventListener("submit", () => {
+      alert("New route added successfully!");
+    });
+  }
 
-  document.querySelectorAll(".btn-delete").forEach(btn => {
-    btn.addEventListener("click", () => {
-      if (confirm("Are you sure you want to delete this route?")) {
-        alert("Route deleted.");
+  const deleteButtons = document.querySelectorAll(".btn-delete");
+  deleteButtons.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const confirmDelete = confirm("Are you sure you want to delete this route?");
+      if (!confirmDelete) {
+        e.preventDefault();
       }
     });
   });
