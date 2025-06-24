@@ -1,6 +1,15 @@
 <?php
 session_start();
 include('../includes/admin-sidebar.php');
+include('../config/db.php');
+
+// Count stats
+$total = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM users"));
+$active = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM users WHERE status='active'"));
+$banned = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM users WHERE status='banned'"));
+
+// Get all users
+$users = mysqli_query($conn, "SELECT * FROM users ORDER BY created_at DESC");
 ?>
 
 <!-- External Libraries -->
@@ -8,7 +17,6 @@ include('../includes/admin-sidebar.php');
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
 <link rel="stylesheet" href="../assets/css/admin/manage-users.css">
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../assets/js/admin/manage-users.js" defer></script>
 
 <div class="admin-layout">
@@ -22,17 +30,17 @@ include('../includes/admin-sidebar.php');
         <div class="card glass">
           <div class="icon-circle"><i class="fas fa-users"></i></div>
           <h2>Total Users</h2>
-          <p>230</p>
+          <p><?php echo $total; ?></p>
         </div>
         <div class="card glass">
           <div class="icon-circle"><i class="fas fa-user-check"></i></div>
           <h2>Active Users</h2>
-          <p>180</p>
+          <p><?php echo $active; ?></p>
         </div>
         <div class="card glass">
           <div class="icon-circle"><i class="fas fa-user-slash"></i></div>
           <h2>Banned Users</h2>
-          <p>50</p>
+          <p><?php echo $banned; ?></p>
         </div>
       </div>
 
@@ -47,7 +55,7 @@ include('../includes/admin-sidebar.php');
         <button class="btn-refresh"><i class="fas fa-sync-alt"></i> Refresh</button>
       </div>
 
-      <!-- Users Table -->
+      <!-- User Table -->
       <div class="user-table-wrapper" data-aos="fade-up">
         <table class="user-table">
           <thead>
@@ -60,26 +68,29 @@ include('../includes/admin-sidebar.php');
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Ismail Ahamed</td>
-              <td>ismail@email.com</td>
-              <td><span class="status badge active">Active</span></td>
-              <td>
-                <button class="btn action view"><i class="fas fa-eye"></i></button>
-                <button class="btn action ban"><i class="fas fa-user-slash"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Chathura Silva</td>
-              <td>chathura@email.com</td>
-              <td><span class="status badge banned">Banned</span></td>
-              <td>
-                <button class="btn action view"><i class="fas fa-eye"></i></button>
-                <button class="btn action unban"><i class="fas fa-user-check"></i></button>
-              </td>
-            </tr>
+            <?php while ($row = mysqli_fetch_assoc($users)): ?>
+              <tr>
+                <td><?php echo $row['id']; ?></td>
+                <td><?php echo htmlspecialchars($row['name']); ?></td>
+                <td><?php echo htmlspecialchars($row['email']); ?></td>
+                <td>
+                  <?php if ($row['status'] == 'active'): ?>
+                    <span class="status badge active">Active</span>
+                  <?php else: ?>
+                    <span class="status badge banned">Banned</span>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <form method="post" action="update-user-status.php" style="display:inline;">
+                    <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                    <input type="hidden" name="action" value="<?php echo $row['status'] == 'active' ? 'ban' : 'unban'; ?>">
+                    <button type="submit" class="btn action <?php echo $row['status'] == 'active' ? 'ban' : 'unban'; ?>">
+                      <i class="fas fa-user-<?php echo $row['status'] == 'active' ? 'slash' : 'check'; ?>"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            <?php endwhile; ?>
           </tbody>
         </table>
       </div>
@@ -90,6 +101,7 @@ include('../includes/admin-sidebar.php');
 <footer class="admin-footer">
   <p>&copy; <?php echo date("Y"); ?> BookMyTrain Admin Panel. All rights reserved.</p>
 </footer>
+
 
 
 <style>

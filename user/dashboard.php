@@ -1,6 +1,13 @@
-<?php include('../includes/header.php'); ?>
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header("Location: ../login.php");
+  exit;
+}
+include('../includes/header.php');
+?>
 
-<!-- ✅ External CSS -->
+<!-- ✅ External CSS & Icons -->
 <link rel="stylesheet" href="../assets/css/user/dashboard.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
@@ -9,7 +16,7 @@
 <section class="user-dashboard" data-aos="fade-up">
   <div class="container dashboard-wrapper">
     <div class="welcome-box" data-aos="fade-down">
-      <h1><i class="fas fa-user-circle"></i> Welcome to Your Dashboard</h1>
+      <h1><i class="fas fa-user-circle"></i> Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!</h1>
       <p>Manage your bookings, update your profile, and share your experience with BookMyTrain.</p>
     </div>
 
@@ -44,12 +51,25 @@
 
 <!-- ✅ Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script src="../assets/js/user/dashboard.js"></script>
 <script>
   AOS.init();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.btn-dashboard');
+    buttons.forEach(button => {
+      button.addEventListener('mouseenter', () => {
+        button.style.transform = 'scale(1.05)';
+      });
+      button.addEventListener('mouseleave', () => {
+        button.style.transform = 'scale(1)';
+      });
+    });
+  });
 </script>
+
+<!-- ✅ Dashboard CSS -->
 <style>
-  .user-dashboard {
+.user-dashboard {
   background: #f1f4fd;
   padding: 70px 20px;
   font-family: 'Segoe UI', sans-serif;
@@ -125,8 +145,10 @@
 .btn-dashboard:hover {
   background-color: #5a28c8;
 }
-
 </style>
+
+<?php include('../includes/footer.php'); ?>
+
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -142,4 +164,3 @@
 });
 
 </script>
-<?php include('../includes/footer.php'); ?>
