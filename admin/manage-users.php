@@ -84,7 +84,7 @@ $users = mysqli_query($conn, "SELECT * FROM users ORDER BY created_at DESC");
                   <form method="post" action="update-user-status.php" style="display:inline;">
                     <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
                     <input type="hidden" name="action" value="<?php echo $row['status'] == 'active' ? 'ban' : 'unban'; ?>">
-                    <button type="submit" class="btn action <?php echo $row['status'] == 'active' ? 'ban' : 'unban'; ?>">
+                    <button type="submit" class="btn action <?php echo $row['status'] == 'active' ? 'ban' : 'unban'; ?>" onclick="return confirm('<?php echo $row['status'] == 'active' ? 'Ban' : 'Unban'; ?> this user?')">
                       <i class="fas fa-user-<?php echo $row['status'] == 'active' ? 'slash' : 'check'; ?>"></i>
                     </button>
                   </form>

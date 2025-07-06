@@ -1,51 +1,67 @@
 <?php
 session_start();
 include('../includes/admin-sidebar.php');
+include('../config/db.php');
+
+// Handle booking status update
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && isset($_POST['booking_id'])) {
+  $booking_id = intval($_POST['booking_id']);
+  $action = $_POST['action'];
+
+  if ($action === 'cancel') {
+    mysqli_query($conn, "UPDATE bookings SET status='cancelled' WHERE id=$booking_id");
+  } elseif ($action === 'confirm') {
+    mysqli_query($conn, "UPDATE bookings SET status='confirmed' WHERE id=$booking_id");
+  }
+  header("Location: manage-bookings.php");
+  exit;
+}
+
+// Count stats
+$total = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM bookings"));
+$confirmed = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM bookings WHERE status='confirmed'"));
+$cancelled = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM bookings WHERE status='cancelled'"));
+
+// Get all bookings
+$bookings = mysqli_query($conn, "
+  SELECT b.*, u.name AS user_name
+  FROM bookings b
+  JOIN users u ON b.user_id = u.id
+  ORDER BY b.created_at DESC
+");
 ?>
 
 <!-- External Resources -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+<link rel="stylesheet" href="../assets/css/admin/manage-bookings.css">
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script src="../assets/js/admin/manage-bookings.js" defer></script>
 
 <div class="admin-layout">
   <main class="dashboard-section" data-aos="fade-up">
     <div class="dashboard-container">
-
-      <!-- Title -->
       <h1><i class="fas fa-ticket-alt"></i> Manage <span>Bookings</span></h1>
       <p class="dashboard-subtitle">Track and manage all user bookings across the train network.</p>
 
-      <!-- Stat Cards -->
       <div class="dashboard-cards" data-aos="zoom-in">
-        <div class="card glass">
-          <h2>Total Bookings</h2>
-          <p>145</p>
-        </div>
-        <div class="card glass">
-          <h2>Confirmed</h2>
-          <p>120</p>
-        </div>
-        <div class="card glass">
-          <h2>Cancelled</h2>
-          <p>25</p>
-        </div>
+        <div class="card glass"><h2>Total Bookings</h2><p><?= $total ?></p></div>
+        <div class="card glass"><h2>Confirmed</h2><p><?= $confirmed ?></p></div>
+        <div class="card glass"><h2>Cancelled</h2><p><?= $cancelled ?></p></div>
       </div>
 
-      <!-- Controls -->
       <div class="controls">
-        <input type="text" class="search-input" placeholder="Search by user or train..." />
-        <select class="status-filter">
+        <input type="text" class="search-input" placeholder="Search by user or train..." oninput="filterBookings()" />
+        <select class="status-filter" onchange="filterBookings()">
           <option value="all">All Statuses</option>
           <option value="confirmed">Confirmed</option>
           <option value="cancelled">Cancelled</option>
         </select>
-        <button class="btn-refresh"><i class="fas fa-sync-alt"></i> Refresh</button>
+        <button class="btn-refresh" onclick="location.reload();"><i class="fas fa-sync-alt"></i> Refresh</button>
       </div>
 
-      <!-- Bookings Table -->
       <div class="booking-table-wrapper" data-aos="fade-up" data-aos-delay="100">
-        <table class="booking-table">
+        <table class="booking-table" id="bookingTable">
           <thead>
             <tr>
               <th>#</th>
@@ -59,49 +75,44 @@ include('../includes/admin-sidebar.php');
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>001</td>
-              <td>Jane Perera</td>
-              <td>Southern Express</td>
-              <td>Galle</td>
-              <td>Colombo Fort</td>
-              <td>2025-06-20</td>
-              <td><span class="badge success">Confirmed</span></td>
-              <td>
-                <button class="action-btn view"><i class="fas fa-eye"></i></button>
-                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                <button class="action-btn cancel"><i class="fas fa-times"></i></button>
-              </td>
-            </tr>
+            <?php $i = 1; while ($row = mysqli_fetch_assoc($bookings)): ?>
+              <tr>
+                <td><?= str_pad($i++, 3, "0", STR_PAD_LEFT) ?></td>
+                <td><?= htmlspecialchars($row['user_name']) ?></td>
+                <td><?= htmlspecialchars($row['train_name']) ?></td>
+                <td><?= htmlspecialchars($row['from_station']) ?></td>
+                <td><?= htmlspecialchars($row['to_station']) ?></td>
+                <td><?= htmlspecialchars($row['travel_date']) ?></td>
+                <td>
+                  <span class="badge <?= $row['status'] === 'confirmed' ? 'success' : 'cancelled' ?>">
+                    <?= ucfirst($row['status']) ?>
+                  </span>
+                </td>
+                <td>
+                  <form method="POST" class="booking-action-form">
+                    <input type="hidden" name="booking_id" value="<?= $row['id'] ?>">
+                    <button type="button" class="action-btn view"><i class="fas fa-eye"></i></button>
+                    <button type="button" class="action-btn edit"><i class="fas fa-edit"></i></button>
+                    <?php if ($row['status'] === 'confirmed'): ?>
+                      <button class="action-btn cancel" name="action" value="cancel"><i class="fas fa-times"></i></button>
+                    <?php else: ?>
+                      <button class="action-btn confirm" name="action" value="confirm"><i class="fas fa-check"></i></button>
+                    <?php endif; ?>
+                  </form>
+                </td>
+              </tr>
+            <?php endwhile; ?>
           </tbody>
         </table>
       </div>
-
-      <!-- Pagination -->
-      <div class="pagination-controls" data-aos="fade-up">
-        <button class="page-btn">Previous</button>
-        <span class="page-info">Page 1 of 3</span>
-        <button class="page-btn">Next</button>
-      </div>
-
-      <!-- Recent Bookings -->
-      <div class="recent-bookings" data-aos="fade-up" data-aos-delay="200">
-        <h3>Recent Bookings</h3>
-        <ul>
-          <li><i class="fas fa-check-circle success-icon"></i> Anushka booked Intercity Express (Colombo → Kandy)</li>
-          <li><i class="fas fa-check-circle success-icon"></i> Malithi booked Yal Devi (Vavuniya → Jaffna)</li>
-          <li><i class="fas fa-times-circle cancel-icon"></i> Sahan cancelled Southern Express (Galle → Colombo)</li>
-          <li><i class="fas fa-check-circle success-icon"></i> Kumari booked Rajarata Rejina (Anuradhapura → Colombo)</li>
-        </ul>
-      </div>
-
     </div>
   </main>
 </div>
 
 <footer class="admin-footer">
-  <p>&copy; <?php echo date("Y"); ?> BookMyTrain Admin Panel. All rights reserved.</p>
+  <p>&copy; <?= date("Y") ?> BookMyTrain Admin Panel. All rights reserved.</p>
 </footer>
+
 
 <!-- Styles -->
 <style>

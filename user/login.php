@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result && mysqli_num_rows($result) === 1) {
         $user = mysqli_fetch_assoc($result);
         if (password_verify($password, $user["password"])) {
-            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_id'] = $user['id']; // Store generated ID
             $_SESSION['user_name'] = $user['name'];
             header("Location: /BookMyTrain/user/dashboard.php");
             exit;
@@ -53,6 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="assets/js/auth-login.js"></script>
 </body>
 </html>
+
 
 
 <style>

@@ -1,5 +1,16 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include('config/db.php');
+
+// Safe random user ID generator with fallback
+function generateUserId() {
+    try {
+        return 'USR' . strtoupper(bin2hex(random_bytes(4)));
+    } catch (Exception $e) {
+        return 'USR' . strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 8));
+    }
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name     = mysqli_real_escape_string($conn, $_POST["name"]);
@@ -29,17 +40,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $profile_img = $filename;
         }
 
+        // Email uniqueness check
         $check = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
         if (mysqli_num_rows($check) > 0) {
             $error = "Email already registered.";
         } else {
-            $query = "INSERT INTO users (name, email, phone, address, password, profile_image) 
-                      VALUES ('$name', '$email', '$phone', '$address', '$hashedPassword', '$profile_img')";
+            $user_id = generateUserId();
+            $query = "INSERT INTO users (id, name, email, phone, address, password, profile_image) 
+                      VALUES ('$user_id', '$name', '$email', '$phone', '$address', '$hashedPassword', '$profile_img')";
             if (mysqli_query($conn, $query)) {
                 header("Location: login.php?success=1");
                 exit;
             } else {
-                $error = "Something went wrong!";
+                $error = "Something went wrong: " . mysqli_error($conn);
             }
         }
     }
@@ -52,8 +65,117 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Register - BookMyTrain</title>
-  <link rel="stylesheet" href="assets/css/auth.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .auth-container {
+      background: #fff;
+      padding: 40px 30px;
+      max-width: 480px;
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      animation: slideFade 0.6s ease-in-out;
+    }
+
+    .auth-container h2 {
+      margin-bottom: 25px;
+      color: #333;
+      text-align: center;
+    }
+
+    .auth-container form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .auth-container input {
+      padding: 14px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: 0.3s ease;
+    }
+
+    .auth-container input[type="file"] {
+      padding: 12px;
+      background: #f9f9f9;
+      font-size: 14px;
+    }
+
+    .auth-container input:focus {
+      border-color: #2575fc;
+      outline: none;
+      box-shadow: 0 0 6px rgba(37, 117, 252, 0.3);
+    }
+
+    .auth-container button {
+      padding: 14px;
+      background-color: #2575fc;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .auth-container button:hover {
+      background-color: #1a5fd0;
+    }
+
+    .auth-container p {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .auth-container a {
+      color: #2575fc;
+      text-decoration: none;
+    }
+
+    .auth-container a:hover {
+      text-decoration: underline;
+    }
+
+    .error-msg {
+      color: red;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .password-info {
+      font-size: 13px;
+      color: #666;
+      margin-top: -10px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    @keyframes slideFade {
+      from {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="auth-container">
@@ -79,163 +201,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <p>Already have an account? <a href="login.php">Login here</a></p>
   </div>
 
-  <script src="assets/js/auth.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("register-form");
+      const inputs = form.querySelectorAll("input");
+      const password = document.getElementById("password");
+      const confirmPassword = document.getElementById("confirm_password");
+
+      form.addEventListener("submit", (e) => {
+        let valid = true;
+
+        inputs.forEach((input) => {
+          if (!input.value.trim() && input.type !== "file") {
+            input.style.borderColor = "red";
+            valid = false;
+          } else {
+            input.style.borderColor = "#ccc";
+          }
+        });
+
+        if (password.value.length < 6) {
+          password.style.borderColor = "red";
+          alert("Password must be at least 6 characters.");
+          valid = false;
+        }
+
+        if (password.value !== confirmPassword.value) {
+          password.style.borderColor = "red";
+          confirmPassword.style.borderColor = "red";
+          alert("Passwords do not match.");
+          valid = false;
+        }
+
+        if (!valid) {
+          e.preventDefault();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
-
-
-<style>
-    /* assets/css/auth.css */
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.auth-container {
-  background: #fff;
-  padding: 40px 30px;
-  max-width: 480px;
-  width: 100%;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  animation: slideFade 0.6s ease-in-out;
-}
-
-.auth-container h2 {
-  margin-bottom: 25px;
-  color: #333;
-  text-align: center;
-}
-
-.auth-container form {
-  display: flex;
-  flex-direction: column;
-}
-
-.auth-container input {
-  padding: 14px;
-  margin-bottom: 16px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 15px;
-  transition: 0.3s ease;
-}
-
-.auth-container input[type="file"] {
-  padding: 12px;
-  background: #f9f9f9;
-  font-size: 14px;
-}
-
-.auth-container input:focus {
-  border-color: #2575fc;
-  outline: none;
-  box-shadow: 0 0 6px rgba(37, 117, 252, 0.3);
-}
-
-.auth-container button {
-  padding: 14px;
-  background-color: #2575fc;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.auth-container button:hover {
-  background-color: #1a5fd0;
-}
-
-.auth-container p {
-  text-align: center;
-  margin-top: 16px;
-  font-size: 14px;
-}
-
-.auth-container a {
-  color: #2575fc;
-  text-decoration: none;
-}
-
-.auth-container a:hover {
-  text-decoration: underline;
-}
-
-.error-msg {
-  color: red;
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-.password-info {
-  font-size: 13px;
-  color: #666;
-  margin-top: -10px;
-  margin-bottom: 16px;
-  display: block;
-}
-
-@keyframes slideFade {
-  from {
-    opacity: 0;
-    transform: translateY(-40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-</style>
-
-<script>
-    // assets/js/auth.js
-
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("register-form");
-  const inputs = form.querySelectorAll("input");
-  const password = document.getElementById("password");
-  const confirmPassword = document.getElementById("confirm_password");
-
-  form.addEventListener("submit", (e) => {
-    let valid = true;
-
-    inputs.forEach((input) => {
-      if (!input.value.trim() && input.type !== "file") {
-        input.style.borderColor = "red";
-        valid = false;
-      } else {
-        input.style.borderColor = "#ccc";
-      }
-    });
-
-    if (password.value.length < 6) {
-      password.style.borderColor = "red";
-      alert("Password must be at least 6 characters.");
-      valid = false;
-    }
-
-    if (password.value !== confirmPassword.value) {
-      password.style.borderColor = "red";
-      confirmPassword.style.borderColor = "red";
-      alert("Passwords do not match.");
-      valid = false;
-    }
-
-    if (!valid) {
-      e.preventDefault();
-    }
-  });
-});
-
-</script>

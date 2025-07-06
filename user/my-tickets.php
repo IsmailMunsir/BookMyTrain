@@ -1,9 +1,9 @@
 <?php
 session_start();
-include('../includes/header.php');
 include('../config/db.php');
+include('../includes/header.php');
 
-// Redirect if not logged in
+// Redirect to login if not logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit;
@@ -11,9 +11,9 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch bookings
+// Fetch user's bookings
 $stmt = $conn->prepare("SELECT * FROM bookings WHERE user_id = ? ORDER BY travel_date DESC");
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("s", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
@@ -25,7 +25,7 @@ $result = $stmt->get_result();
   <title>My Booked Tickets</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <!-- External CSS -->
+  <!-- External CSS & AOS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
@@ -141,7 +141,7 @@ $result = $stmt->get_result();
           ?>
           <div class="ticket-card" data-aos="zoom-in">
             <div class="ticket-info">
-              <p><strong>Booking Date:</strong> <?= date('F j, Y, g:i a', strtotime($row['booked_at'])) ?></p>
+              <p><strong>Booking Date:</strong> <?= date('F j, Y, g:i a', strtotime($row['created_at'])) ?></p>
               <p><strong>Travel Date:</strong> <?= htmlspecialchars($row['travel_date']) ?></p>
               <p><strong>From:</strong> <?= htmlspecialchars($row['from_station']) ?></p>
               <p><strong>To:</strong> <?= htmlspecialchars($row['to_station']) ?></p>
@@ -163,7 +163,7 @@ $result = $stmt->get_result();
   </div>
 </section>
 
-<!-- External JS -->
+<!-- JS AOS -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
   AOS.init();

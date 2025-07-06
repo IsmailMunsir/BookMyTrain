@@ -18,14 +18,16 @@ include('../includes/admin-sidebar.php');
       <!-- Profile Info Card -->
       <div class="profile-card glass" data-aos="fade-up">
         <div class="profile-image">
-          <img src="../assets/image/profile-avatar.png" alt="Admin Avatar" />
+          <img src="Admin-Profile-Vector-PNG-Photos.png" alt="Admin Avatar" />
+
+
         </div>
         <div class="profile-details">
           <h1>Admin Profile</h1>
-          <p class="tagline">Welcome back, <strong>Ahamed Ismail</strong>!</p>
+          <p class="tagline">Welcome back, <strong>Admin</strong>!</p>
           <div class="info">
-            <p><i class="fas fa-user"></i> <strong>Name:</strong> Ahamed Ismail</p>
-            <p><i class="fas fa-envelope"></i> <strong>Email:</strong> admin@example.com</p>
+            <p><i class="fas fa-user"></i> <strong>Name:</strong>Admin</p>
+            <p><i class="fas fa-envelope"></i> <strong>Email:</strong> admin@gamil.com</p>
             <p><i class="fas fa-user-shield"></i> <strong>Role:</strong> Super Admin</p>
           </div>
         </div>
