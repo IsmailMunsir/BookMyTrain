@@ -1,44 +1,4 @@
-<!-- ✅ Footer CSS -->
-<link rel="stylesheet" href="assets/css/footer.css">
-
-<!-- ✅ Footer HTML -->
-<footer class="site-footer">
-  <div class="footer-container">
-    <div class="footer-top">
-      
-      <!-- Logo & Brand -->
-      <div class="footer-brand">
-        <img src="assets/image/logo.png" alt="BookMyTrain Logo" class="footer-logo" />
-        <h2 class="brand-name">Book<span>My</span>Train</h2>
-        <p>Your trusted train booking partner in Sri Lanka.</p>
-      </div>
-      
-      <!-- Quick Links -->
-      <div class="footer-links">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="index.php">Home</a></li>
-          <li><a href="about.php">About</a></li>
-          <li><a href="contact.php">Contact</a></li>
-          <li><a href="terms.php">Terms & Conditions</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact Info -->
-      <div class="footer-contact">
-        <h3>Contact Us</h3>
-        <p><i class="fas fa-envelope"></i> support@bookmytrain.lk</p>
-        <p><i class="fas fa-phone"></i> +94 11 123 4567</p>
-        <p><i class="fas fa-map-marker-alt"></i> Colombo, Sri Lanka</p>
-      </div>
-    </div>
-
-    <!-- Copyright -->
-    <div class="footer-bottom">
-      <p>&copy; <?php echo date("Y"); ?> BookMyTrain. All rights reserved.</p>
-    </div>
-  </div>
-</footer>
+<!-- includes/footer.php -->
 
 <style>
   .site-footer {
@@ -66,17 +26,17 @@
   flex: 1 1 300px;
 }
 
-.footer-brand .footer-logo {
+.footer-logo {
   width: 190px;
   margin-bottom: -14px;
 }
 
-.footer-brand .brand-name {
+.brand-name {
   font-size: 24px;
   color: #fff;
 }
 
-.footer-brand .brand-name span {
+.brand-name span {
   color: #facc15;
 }
 
@@ -127,3 +87,44 @@
 }
 
 </style>
+<!-- ✅ Footer CSS -->
+<link rel="stylesheet" href="/BookMyTrain/assets/css/footer.css">
+
+<!-- ✅ Footer HTML -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-top">
+
+      <!-- Logo & Brand -->
+      <div class="footer-brand">
+        <img src="/BookMyTrain/assets/image/logo.png" alt="BookMyTrain Logo" class="footer-logo" />
+        <h2 class="brand-name">Book<span>My</span>Train</h2>
+        <p>Your trusted train booking partner in Sri Lanka.</p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/BookMyTrain/index.php">Home</a></li>
+          <li><a href="/BookMyTrain/about.php">About</a></li>
+          <li><a href="/BookMyTrain/contact.php">Contact</a></li>
+          <li><a href="/BookMyTrain/terms.php">Terms & Conditions</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="footer-contact">
+        <h3>Contact Us</h3>
+        <p><i class="fas fa-envelope"></i> support@bookmytrain.lk</p>
+        <p><i class="fas fa-phone"></i> +94 11 123 4567</p>
+        <p><i class="fas fa-map-marker-alt"></i> Colombo, Sri Lanka</p>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <p>&copy; <?php echo date('Y'); ?> BookMyTrain. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

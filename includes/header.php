@@ -1,30 +1,15 @@
 <!-- includes/header.php -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BookMyTrain</title>
+<link rel="stylesheet" href="/BookMyTrain/assets/css/header.css">
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- ✅ Custom CSS -->
-  <link rel="stylesheet" href="assets/css/header.css">
-
-  <!-- ✅ Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
-
-  <!-- ✅ Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-
-<!-- ✅ Header Start -->
 <header class="site-header">
   <div class="container header-container">
 
-    <!-- ✅ Logo and Brand Name -->
-    <a href="index.php" class="branding">
+    <!-- ✅ Logo and Brand -->
+    <a href="/BookMyTrain/index.php" class="branding">
       <div class="logo-wrapper">
-        <img src="assets/image/logo.png" alt="BookMyTrain Logo" class="logo" />
+        <img src="/BookMyTrain/assets/image/logo.png" alt="BookMyTrain Logo" class="logo" />
       </div>
       <h1 class="brand-name">Book<span>My</span>Train</h1>
     </a>
@@ -32,20 +17,18 @@
     <!-- ✅ Navigation Menu -->
     <nav class="main-nav">
       <ul class="nav-list">
-        <li><a href="index.php">Home</a></li>
-        <li><a href="about.php">About</a></li>
-        <li><a href="terms.php">Terms & Conditions</a></li>
-        <li><a href="contact.php">Contact</a></li>
-        <li><a href="user/book-ticket.php" class="btn-book">🚆 Book Now</a></li>
+        <li><a href="/BookMyTrain/index.php">Home</a></li>
+        <li><a href="/BookMyTrain/about.php">About</a></li>
+        <li><a href="/BookMyTrain/terms.php">Terms & Conditions</a></li>
+        <li><a href="/BookMyTrain/contact.php">Contact</a></li>
+        <li><a href="/BookMyTrain/user/login.php" class="btn-book">🚆 Book Now</a></li>
       </ul>
     </nav>
 
   </div>
-</header>
-<!-- ✅ Header End -->
 
-<style>
-  /* ================== HEADER STYLES ================== */
+  <style>
+    /* assets/css/header.css */
 
 body {
   margin: 0;
@@ -68,7 +51,6 @@ body {
   margin: 0 auto;
 }
 
-/* Header layout */
 .header-container {
   display: flex;
   align-items: center;
@@ -76,7 +58,6 @@ body {
   flex-wrap: wrap;
 }
 
-/* Logo and branding */
 .branding {
   display: flex;
   align-items: center;
@@ -106,7 +87,6 @@ body {
   color: #facc15;
 }
 
-/* Navigation menu */
 .main-nav .nav-list {
   list-style: none;
   display: flex;
@@ -131,7 +111,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* Book Now button */
 .btn-book {
   background-color: #facc15;
   color: #000;
@@ -171,4 +150,5 @@ body {
   }
 }
 
-</style>
+  </style>
+</header>

@@ -21,7 +21,7 @@
     <div class="text-content" data-aos="fade-right">
       <h1>Welcome to <span class="highlight">BookMyTrain</span></h1>
       <p>Book train tickets in seconds with real-time schedules and seat availability.</p>
-      <a href="user/book-ticket.php" class="btn-primary pulse">🚆 Book Now</a>
+      <a href="user/login.php" class="btn-primary pulse">🚆 Book Now</a>
     </div>
     <div class="image-content" data-aos="fade-left">
       <img src="assets/image/train-hero.gif" alt="Train Booking" class="hero-img" />
@@ -37,17 +37,17 @@
     <h2 class="section-title" data-aos="fade-up">Why Choose BookMyTrain?</h2>
     <div class="features-grid">
       <div class="feature-card" data-aos="zoom-in">
-        <img src="assets/image/easy.jpg" alt="Easy Booking">
+        <img src="assets/image/easy.png" alt="Easy Booking">
         <h3>Easy Booking</h3>
         <p>Intuitive platform that makes booking fast and hassle-free.</p>
       </div>
       <div class="feature-card" data-aos="zoom-in" data-aos-delay="100">
-        <img src="assets/image/live.jpg" alt="Live Info">
+        <img src="assets/image/live.png" alt="Live Info">
         <h3>Live Train Info</h3>
         <p>Access real-time train schedules, delays, and seat availability.</p>
       </div>
       <div class="feature-card" data-aos="zoom-in" data-aos-delay="200">
-        <img src="assets/image/support.jpg" alt="Support">
+        <img src="assets/image/support.png" alt="Support">
         <h3>24/7 Support</h3>
         <p>We are here for you anytime, anywhere in Sri Lanka.</p>
       </div>
